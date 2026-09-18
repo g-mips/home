@@ -1,0 +1,140 @@
+if empty("$XDG_CACHE_HOME")
+  let $XDG_CACHE_HOME="$HOME/.cache"
+endif
+
+if empty("$XDG_CONFIG_HOME")
+  let $XDG_CONFIG_HOME="$HOME/.config"
+endif
+
+if empty("$XDG_DATA_HOME")
+  let $XDG_DATA_HOME="$HOME/.local/share"
+endif
+
+if empty("$XDG_STATE_HOME")
+  let $XDG_STATE_HOME="$HOME/.local/state"
+endif
+
+set directory=$XDG_CACHE_HOME/vim/swap,~/,/tmp
+set backupdir=$XDG_STATE_HOME/vim/backup,~/,/tmp
+set undodir=$XDG_STATE_HOME/vim/undo,~/,/tmp
+set viminfo+=n$XDG_CACHE_HOME/vim/viminfo
+set runtimepath+=$XDG_CONFIG_HOME/vim,$XDG_CONFIG_HOME/vim/after,$VIM,$VIMRUNTIME
+let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc"
+set packpath+=$XDG_CONFIG_HOME/vim
+
+" Plugin management
+" execute pathogen#infect()
+
+let g:netrw_home=$XDG_CACHE_HOME.'/vim'
+
+syntax on
+filetype plugin indent on
+
+" Relative number
+function! SetRelNum()
+  if &ft != "man"
+    set nu
+    set relativenumber
+  endif
+endfunc
+
+set nu rnu
+augroup numbertoogle
+  au!
+  au BufEnter,FocusGained,InsertLeave * call SetRelNum()
+  au BufLeave,FocusLost,InsertEnter * set norelativenumber
+augroup END
+
+" Theme
+" set background=dark
+" let g:everforeset_background = 'soft'
+" colorscheme everforest
+" let g:airline_theme = 'everforest'
+" highlight LineNr ctermfg=grey ctermbg=238
+
+if v:version < 802
+    packadd! dracula
+    packadd! nord
+    packadd! srcery-vim
+endif
+syntax enable
+"colorscheme dracula
+"colorscheme nord
+"colorscheme srcery
+set background=dark
+colorscheme PaperColor
+let g:airline_theme='papercolor'
+
+" In term mode, make the background be the same color as the terminal
+highlight Normal ctermbg=NONE
+highlight NonText ctermbg=NONE
+highlight LineNr ctermbg=NONE
+
+" Man
+runtime! ftplugin/man.vim
+
+set cursorline
+set showcmd
+if exists('belloff')
+  set belloff=all
+endif
+set ttyfast
+set incsearch
+
+set sessionoptions+=tabpages,globals
+
+" Web, Vim
+au FileType html,javascript,vim,json setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab smarttab
+au BufNewFile,BufRead *.vue setfiletype html
+
+" C, C++, Shell
+au FileType c,cpp setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab smarttab
+au FileType sh setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab smarttab autoindent
+
+" Golang
+au FileType go setlocal tabstop=8 shiftwidth=8 softtabstop=8 noexpandtab smarttab autoindent
+
+" Python
+au FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab smarttab autoindent
+
+inoremap jj <ESC>
+
+" Remove GUI things
+if has('gui_running')
+  set guioptions -=m
+  set guioptions -=T
+  set guioptions -=r
+endif
+
+let g:markdown_folding = 1
+
+set hlsearch
+set mouse=n
+set ttymouse=xterm2
+
+function! <SID>StripTrailingWhitespaces()
+  if !&binary && &filetype != 'diff'
+    let l:save = winsaveview()
+    keeppatterns %s/\s\+$//e
+    call winrestview(l:save)
+  endif
+endfun
+
+autocmd FileType c,cpp,java,php,ruby,python autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+
+let mapleader = "\\"
+
+nmap <Leader>dl :diffget LO<CR>
+nmap <Leader>db :diffget BA<CR>
+nmap <Leader>dr :diffget RE<CR>
+
+" Map next unresolved conflict to ]C
+nnoremap ]C /<<<<<<< <CR>
+
+" Map previous unresolved conflict to [C
+nnoremap [C ?<<<<<<< <CR>
+
+" Vim Wiki
+let g:vimwiki_list = [{ 'syntax': 'markdown',
+                      \ 'ext': 'md',
+                      \ 'path': '~/Documents/notes' }]
