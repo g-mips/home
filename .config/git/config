@@ -1,0 +1,122 @@
+[alias]
+	st = status
+	sti = status --ignore-submodules
+	stu = status -uno
+	co = checkout
+	cob = checkout -b
+	ci = commit
+	cinv = commit --no-verify
+	cine = commit --no-edit
+	cia = commit --amend
+	ciae = commit --amend --no-edit
+	ciav = commit --amend --no-verify
+	ciaev = commit --amend --no-edit --no-verify
+	mff = merge --ff-only
+	ri = rebase -i
+	pur = pull --rebase
+	pns = pull --no-recurse-submodules
+	pnsr = pull --rebase --no-recurse-submodules
+	loa = log --branches --graph --oneline --decorate --all
+	lob = log --branches --graph --oneline
+	loo = log --oneline --graph
+	dc = diff --cached
+	fp = fetch -p
+	sp = stash pop
+	rf = !GIT_SEQUENCE_EDITOR=true git rebase -i --autosquash
+	mr = push -o merge_request.create -o merge_request.target=master -o merge_request.remove_source_branch origin HEAD
+	unmerged = diff --name-only --diff-filter=U
+
+[core]
+	editor = vim
+	pager = less -+$LESS -R
+	whitespace = blank-at-eol,space-before-tab,blank-at-eof,tabwidth=8
+	safecrlf = warn
+
+[color]
+	ui = true
+
+[diff]
+	tool = vimdiff
+	algorithm = histogram
+	colorMoved = plain
+	mnemonicPrefix = true
+	renames = true
+
+[difftool]
+	prompt = false
+
+[merge]
+	tool = vimdiff
+	conflictstyle = diff3
+
+[mergetool]
+	prompt = false
+	trustExitCode = true
+	keepBackup = false
+
+[grep]
+	lineNumber = true
+
+[log]
+	decorate = auto
+
+[rebase]
+	autoStash = true
+	abbreviateCommands = true
+
+[status]
+	showStash = true
+
+[color]
+	ui = auto
+
+[color "branch"]
+	current = cyan bold reverse
+	local = white
+	plain =
+	remote = cyan
+
+[color "diff"]
+	commit = yellow
+	func = cyan
+	plain =
+	whitespace = magenta reverse
+	meta = white
+	frag = cyan bold reverse
+	old = red
+	new = green
+
+[color "grep"]
+	context =
+	filename =
+	function =
+	linenumber = white
+	match =
+	selected =
+	separator =
+
+[color "interactive"]
+	error =
+	header =
+	help =
+	prompt =
+
+[color "status"]
+	added = green bold
+	changed = yellow bold
+	header =
+	localBranch =
+	nobranch =
+	remoteBranch = cyan bold
+	unmerged = magenta bold reverse
+	untracked = red bold
+	updated = green bold
+
+[submodule]
+	fetchJobs = 12
+
+[init]
+	defaultBranch = master
+
+[include]
+	path = ~/.config/git/config_sensitive.conf
